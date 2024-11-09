@@ -37,7 +37,7 @@ public class PlayerController : MonoBehaviour
 
     // Camera Zoom Settings:
     public int ZoomFOV = 35;
-    public int initialFOV;
+    public float initialFOV;
     public float cameraZoomSmooth = 1;
 
     private bool isZoomed = false;
@@ -47,7 +47,7 @@ public class PlayerController : MonoBehaviour
 
     CharacterController characterController;
 
-    void Start()
+    private void Start()
     {
         // Ensure We Are Using The Character Controller Component:
         characterController = GetComponent<CharacterController>();
@@ -58,6 +58,9 @@ public class PlayerController : MonoBehaviour
 
         // Initialize current footstep sounds to wood sounds by default
         currentFootstepSounds = woodFootstepSounds;
+
+        // Set initial FOV based on current camera FOV
+        initialFOV = playerCam.fieldOfView;
     }
 
     void Update()
@@ -91,19 +94,24 @@ public class PlayerController : MonoBehaviour
         characterController.Move(moveDirection * Time.deltaTime);
 
         // Camera Movement In Action:
+
         if (canMove)
-        {
-            rotationX -= Input.GetAxis("Mouse Y") * lookSpeed;
-            rotationX = Mathf.Clamp(rotationX, -lookXLimit, lookXLimit);
+       {
+            // Capture mouse movement for both axes
+            float mouseX = Input.GetAxis("Mouse X") * lookSpeed;
+            float mouseY = Input.GetAxis("Mouse Y") * lookSpeed;
 
-            rotationY += Input.GetAxis("Mouse X") * lookSpeed;
+            // Horizontal rotation (side-to-side) - applied to the player body
+            rotationY += mouseX;
+            transform.rotation = Quaternion.Euler(0f, rotationY, 0f);
 
-            Quaternion targetRotationX = Quaternion.Euler(rotationX, 0, 0);
-            Quaternion targetRotationY = Quaternion.Euler(0, rotationY, 0);
+            // Vertical rotation (up-and-down) - applied only to the camera
+            rotationX -= mouseY;
+            rotationX = Mathf.Clamp(rotationX, -lookXLimit, lookXLimit); // Clamp to avoid over-rotation
+            playerCam.transform.localRotation = Quaternion.Euler(rotationX, 0f, 0f);
+       }
 
-            playerCam.transform.localRotation = Quaternion.Slerp(playerCam.transform.localRotation, targetRotationX, Time.deltaTime * cameraRotationSmooth);
-            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotationY, Time.deltaTime * cameraRotationSmooth);
-        }
+
 
         // Zooming In Action:
         if (Input.GetButtonDown("Fire2"))

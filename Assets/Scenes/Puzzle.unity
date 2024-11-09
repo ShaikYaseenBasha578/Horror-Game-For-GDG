@@ -133,8 +133,9 @@ GameObject:
   m_Component:
   - component: {fileID: 303184830}
   - component: {fileID: 303184829}
+  - component: {fileID: 303184831}
   m_Layer: 0
-  m_Name: GameObject
+  m_Name: ScriptsHolder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -167,6 +168,20 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &303184831
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 303184828}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f7112ef9c5d594aafaa4c39556852133, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  puzzleButton: {fileID: 1034701894}
+  delay: 10
 --- !u!1 &363505687 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8897022489660396980, guid: 2a93d8dcbaeaa40b496e9ff718b6a01f, type: 3}
